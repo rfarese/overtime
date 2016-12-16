@@ -6,5 +6,4 @@ RSpec.describe Post, type: :model do
 
   it { should have_valid(:rationale).when("This is a rationale", "Something 123" )}
   it { should_not have_valid(:date).when(nil, "") }
-  
 end

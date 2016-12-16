@@ -1,18 +1,22 @@
 require 'rails_helper'
 
 RSpec.feature "Posts index page", :type => :feature do
+  let(:user) { FactoryGirl.create(:user) }
+
   scenario "User visits the posts index page" do
     visit posts_path
     expect(page.status_code).to eq(200)
   end
 
   scenario 'Page has a title of Posts' do
+    login_as(user, scope: :user)
     visit posts_path
     expect(page).to have_content("Posts")
   end
 
   describe 'creation' do
     before do
+      login_as(user, scope: :user)
       visit new_post_path
     end
 
@@ -26,6 +30,14 @@ RSpec.feature "Posts index page", :type => :feature do
       click_button "Save"
 
       expect(page).to have_content("Some rationale")
+    end
+
+    it 'will have a user associated it' do
+      fill_in "post[date]", with: Date.today
+      fill_in "post[rationale]", with: "User Association"
+      click_button "Save"
+
+      expect(User.last.posts.last.rationale).to eq("User Association")
     end
   end
 end
