@@ -2,10 +2,11 @@ require 'rails_helper'
 require_relative '../../db/seeders/posts_seeder'
 
 RSpec.describe PostsSeeder do
+  let(:seeder) { PostsSeeder.new }
+
   def add_post_seeds
-    posts_seeder = PostsSeeder.new
-    posts_seeder.create_post_attributes(10)
-    posts_seeder.seed!
+    seeder.create_post_attributes(10)
+    seeder.seed!
   end
 
   it "doesn't create duplicate records on multiple runs" do
@@ -18,7 +19,6 @@ RSpec.describe PostsSeeder do
 
   describe "#create_post_attributes" do
     it "creates a set of post attributes for each post" do
-      seeder = PostsSeeder.new
       seeder.create_post_attributes(10)
 
       expect(seeder.posts_attributes.size).to eq(10)
@@ -27,7 +27,6 @@ RSpec.describe PostsSeeder do
 
   describe "#post_attributes" do
     it "creates a set of post attributes" do
-      seeder = PostsSeeder.new
       random_number = 1
       attributes = seeder.post_attributes(random_number)
 
@@ -38,7 +37,6 @@ RSpec.describe PostsSeeder do
 
   describe "#seed!" do
     it "saves the new posts to the databse" do
-      seeder = PostsSeeder.new
       seeder.create_post_attributes(5)
 
       expect(Post.count).to eq(0)
