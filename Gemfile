@@ -7,6 +7,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'devise'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
+gem "gritter", "1.2.0"
 
 group :development, :test do
   gem 'capybara'
