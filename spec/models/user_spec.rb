@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
+  let(:user) { FactoryGirl.create(:user) }
+
   it { should have_valid(:first_name).when("Bobby", "Sarah" )}
   it { should_not have_valid(:first_name).when(nil, "") }
 
@@ -18,5 +20,11 @@ RSpec.describe User, type: :model do
 
     expect(new_user).to_not be_valid
     expect(new_user.errors[:password_confirmation]).to_not be_blank
+  end
+
+  describe "#full_name" do
+    it 'combines first and last name' do
+      expect(user.full_name).to eq("#{user.last_name.upcase}, #{user.first_name.upcase}")
+    end
   end
 end
