@@ -14,6 +14,16 @@ RSpec.feature "Posts index page", :type => :feature do
     expect(page).to have_content("Posts")
   end
 
+  scenario "Page has a list of all the Posts" do
+    login_as(user, scope: :user)
+    post1 = Post.create(date: Date.today, rationale: "Post1", user_id: user.id)
+    post2 = Post.create(date: Date.today, rationale: "Post2", user_id: user.id)
+    visit posts_path
+    
+    expect(page).to have_content("Post1")
+    expect(page).to have_content("Post2")
+  end
+
   describe 'creation' do
     before do
       login_as(user, scope: :user)

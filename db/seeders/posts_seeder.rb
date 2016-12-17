@@ -1,8 +1,9 @@
 class PostsSeeder
-  attr_reader :posts_attributes
+  attr_reader :posts_attributes, :user_ids
 
-  def initialize(posts_attributes=[])
-    @posts_attributes = posts_attributes
+  def initialize(user_ids)
+    @posts_attributes = []
+    @user_ids = user_ids
   end
 
   def create_post_attributes(number_of_posts)
@@ -16,7 +17,8 @@ class PostsSeeder
 
   def post_attributes(number_of_posts)
     { date: Date.today - number_of_posts.day,
-      rationale: "This is the #{number_of_posts} rationale" }
+      rationale: "This is the #{number_of_posts} rationale",
+      user_id: user_ids.sample }
   end
 
   def seed!
