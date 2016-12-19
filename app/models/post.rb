@@ -3,4 +3,6 @@ class Post < ActiveRecord::Base
   belongs_to :user
   validates :date, presence: true
   validates :rationale, presence: true
+
+  scope :posts_by, -> (user) { where(user_id: user.id) }
 end
