@@ -62,31 +62,24 @@ describe 'navigate' do
   	end
 
   	it 'can be created from new form page' do
-      fill_in 'post[date]', with: Date.today
-      fill_in 'post[rationale]', with: "Some rationale"
-      click_on "Save"
+      fill_in_new_post_form
 
-      expect(page).to have_content("Some rationale")
+      expect(page).to have_content("New post form rationale")
   	end
 
     it 'will have a user associated it' do
-      fill_in 'post[date]', with: Date.today
-      fill_in 'post[rationale]', with: "User Association"
-      click_on "Save"
+      fill_in_new_post_form
 
-      expect(Post.last.rationale).to eq("User Association")
+      expect(Post.last.rationale).to eq("New post form rationale")
     end
   end
 
   describe 'edit' do
     it 'can be edited' do
       visit edit_post_path(post)
+      fill_in_edit_post_form
 
-      fill_in 'post[date]', with: Date.today
-      fill_in 'post[rationale]', with: "Edited content"
-      click_on "Save"
-
-      expect(page).to have_content("Edited content")
+      expect(page).to have_content("Edit post form rationale")
     end
 
     it 'cannot be edited by a non authorized user' do
