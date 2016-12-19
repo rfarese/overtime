@@ -24,6 +24,6 @@ FactoryGirl.define do
     last_name "Authorized"
     email { generate :email }
     password "password"
-    password "password"
+    password_confirmation "password"
   end
 end

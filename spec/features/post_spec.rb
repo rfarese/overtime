@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 describe 'navigate' do
+  let(:post)  { FactoryGirl.create(:post) }
+  let(:post2) { FactoryGirl.build_stubbed(:second_post) }
+  let(:user)  { post.user }
+
   before do
-    @post = FactoryGirl.create(:post)
-    @user = @post.user
-    login_as(@user, :scope => :user)
+    login_as(user, :scope => :user)
   end
 
   describe 'index' do
@@ -21,8 +23,6 @@ describe 'navigate' do
   	end
 
     it 'has a list of posts' do
-      post1 = FactoryGirl.build_stubbed(:post)
-      post2 = FactoryGirl.build_stubbed(:second_post)
       visit posts_path
       expect(page).to have_content(/Rationale|content/)
     end
@@ -38,10 +38,9 @@ describe 'navigate' do
 
   describe 'delete' do
     it 'can be deleted' do
-      @post = FactoryGirl.create(:post)
       visit posts_path
 
-      click_link "delete_post_#{@post.id}_from_index"
+      click_link "delete_post_#{post.id}_from_index"
       expect(page.status_code).to eq(200)
     end
   end
@@ -68,20 +67,13 @@ describe 'navigate' do
       fill_in 'post[rationale]', with: "User Association"
       click_on "Save"
 
-      expect(User.last.posts.last.rationale).to eq("User Association")
+      expect(Post.last.rationale).to eq("User Association")
     end
   end
 
   describe 'edit' do
-    it 'can be reached by clicking edit on index page' do
-      visit posts_path
-      click_link "edit_#{@post.id}"
-
-      expect(page.status_code).to eq(200)
-    end
-
     it 'can be edited' do
-      visit edit_post_path(@post)
+      visit edit_post_path(post)
 
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: "Edited content"
@@ -94,7 +86,7 @@ describe 'navigate' do
       logout(:user)
       non_authorized_user = FactoryGirl.create(:non_authorized_user)
       login_as(non_authorized_user, scope: :user)
-      visit edit_post_path(@post)
+      visit edit_post_path(post)
 
       expect(current_path).to eq(root_path)
     end
