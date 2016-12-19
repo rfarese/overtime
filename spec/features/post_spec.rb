@@ -2,8 +2,9 @@ require 'rails_helper'
 
 describe 'navigate' do
   let(:post)  { FactoryGirl.create(:post) }
-  let(:post2) { FactoryGirl.build_stubbed(:second_post) }
+  let(:post2) { FactoryGirl.create(:post) }
   let(:user)  { post.user }
+  let(:user2) { post2.user }
 
   before do
     login_as(user, :scope => :user)
@@ -11,6 +12,8 @@ describe 'navigate' do
 
   describe 'index' do
     before do
+      post
+      post2
       visit posts_path
     end
 
@@ -23,8 +26,12 @@ describe 'navigate' do
   	end
 
     it 'has a list of posts' do
-      visit posts_path
-      expect(page).to have_content(/Rationale|content/)
+      expect(page).to have_content(post.rationale)
+    end
+
+    it 'has a scope so that only post creators can see their posts' do
+      expect(page).to have_content(post.rationale)
+      expect(page).to_not have_content(post2.rationale)
     end
   end
 

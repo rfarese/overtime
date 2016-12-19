@@ -2,11 +2,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    # instead of Post.all, we want to only show the posts that the user should have access too
-      # if a non-admin user, they should only see their own posts
-      # if an admin user, they should see all posts
-    # I'm thinking that I should create a seperate method on the user model that identifies the current users posts and call it from here
-    @posts = Post.all
+    @posts = current_user.posts 
   end
 
   def new
