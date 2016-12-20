@@ -32,8 +32,8 @@ describe 'navigate' do
       logout(:user)
       user = @post.user
       login_as(user, scope: :user)
-
-      @post.update(user_id: user.id, status: 'approved')
+      @post.update(status: 'approved')
+      visit edit_post_path(@post)
 
       expect(current_path).to eq(root_path)
     end
